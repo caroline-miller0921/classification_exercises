@@ -20,23 +20,6 @@ def prep_titanic():
                             drop_first=True)], axis=1)
     return df
 
-def split_data(df, target):
-    '''
-    split data takes in a dataframe or function which returns a dataframe
-    and will split data based on the values present in a cleaned 
-    version of the dataframe. Also you must provide the target
-    at which you'd like the stratify (a feature in the DF)
-    '''
-    train_val, test = train_test_split(df, 
-                                       train_size=.8,
-                                       random_state=1349, 
-                                       stratify=df[target])
-    train, validate = train_test_split(train_val, 
-                                       train_size=0.7,
-                                       random_state=1349,
-                                       stratify=train_val[target])
-    return train, test, validate
-
 def prep_iris():
     '''
     clean iris will take in a single pandas dataframe
@@ -46,7 +29,9 @@ def prep_iris():
     and encoding categorical variables
     '''
     df = acquire.get_iris_data()
+    # take out redundent comlumns
     df = df.drop(columns=['species_id', 'measurement_id'])
+    # rename species_name to just species
     df = df.rename(columns={'species_name': 'species'})
     # encode categorical values
     df = pd.concat(
@@ -73,3 +58,20 @@ def prep_telco():
         [df, pd.get_dummies(df[['gender', 'contract_type', 'internet_service_type', 'payment_type']], 
                             drop_first=True)], axis=1)
     return df
+
+def split_data(df, target):
+    '''
+    split data takes in a dataframe or function which returns a dataframe
+    and will split data based on the values present in a cleaned 
+    version of the dataframe. Also you must provide the target
+    at which you'd like the stratify (a feature in the DF)
+    '''
+    train_val, test = train_test_split(df, 
+                                       train_size=.8,
+                                       random_state=1349, 
+                                       stratify=df[target])
+    train, validate = train_test_split(train_val, 
+                                       train_size=0.7,
+                                       random_state=1349,
+                                       stratify=train_val[target])
+    return train, test, validate
