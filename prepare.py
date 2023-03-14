@@ -18,6 +18,7 @@ def prep_titanic():
     df = pd.concat(
         [df, pd.get_dummies(df[['sex', 'embark_town']], 
                             drop_first=True)], axis=1)
+    df = df.drop(columns=['sex', 'embark_town'])
     return df
 
 def prep_iris():
